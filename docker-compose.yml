@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  oracle-12c:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '1521:1521'
+      - '8080:8080'
+    volumes:
+      - .:/docker-entrypoint-initdb.d
+    environment:
+      WEB_CONSOLE: 'true'
+      DBCA_TOTAL_MEMORY: '4096'
+      USE_UTF8_IF_CHARSET_EMPTY: 'true'
+      ORACLE_SID: 'xe'
