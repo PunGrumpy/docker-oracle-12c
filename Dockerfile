@@ -13,6 +13,12 @@ ADD entrypoint.sh /entrypoint.sh
 
 RUN yum install -y curl && yum clean all
 
+RUN echo "alter session set \"_ORACLE_SCRIPT\"=true;" > /tmp/create_user.sql \
+    && echo "create user docker identified by docker;" >> /tmp/create_user.sql \
+    && echo "grant dba to docker;" >> /tmp/create_user.sql \
+    && sqlplus sys as sysdba @/tmp/create_user.sql \
+    && rm /tmp/create_user.sql
+
 EXPOSE 1521
 EXPOSE 8080
 VOLUME ["/docker-entrypoint-initdb.d"]
